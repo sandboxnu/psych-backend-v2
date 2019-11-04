@@ -26,7 +26,13 @@ async function postData(id, data) {
     text: 'INSERT INTO participantdata(participantid, sessiondata) VALUES($1, $2)',
     values: [id, data]
   }
-  const result = await pool.query(query)
+  success = await pool.query(query) 
+    .then(() => {return true})
+    .catch(() => {return false});
+  
+  if (!success) {
+    throw new Error("Error inserting to db")
+  }
 }
 
 module.exports = {

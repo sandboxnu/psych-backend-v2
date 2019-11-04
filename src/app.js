@@ -47,10 +47,14 @@ app.post('/data', function (req, res) {
         res.send('No data present in body')
     }
 
-    db.postData(req.body.userId, req.body.data);
-    // TODO: Error handling if db post fails
-    res.status(200);
-    res.send({participantId: req.body.userId});
+    db.postData(req.body.userId, req.body.data)
+        .then(result => {
+            res.status(200);
+            res.send({participantId: req.body.userId});
+        }).catch(e => {
+            res.status(500);
+            res.send("We dun goofed. Plz try AgAiN ltr.")
+        });
 });
 
 app.listen(3000, function () {
