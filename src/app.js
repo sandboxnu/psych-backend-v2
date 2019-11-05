@@ -4,13 +4,9 @@ var app = express();
 app.use(express.json());
 
 app.get('/', function (req, res) {
-    // db.getDataByUser("test").then(data => {
-    //     res.send(data);
-    // })
-    // res.send("HELLO");
-    // db.postData("test1", "{}");
     db.getTable().then(data => {
-        res.send(data);
+        res.status(200)
+        res.send("Hello!");
     })
 });
 
@@ -23,12 +19,22 @@ app.post('/config', function (req, res) {
 });
 
 app.get('/data', function (req, res) {
-    res.send('Get all data');
+    // TODO: Add error handling
+    // TODO: Add function to analyze data -> convert to CSV files per user -> then return zipped package with all files.
+    db.getTable().then(data => {
+        res.status(200);
+        res.send(data);
+    })
 });
 
 app.get('/data/:userId', function (req, res) {
     var userId = req.params.userId;
-    res.send('Get data from User:' + userId);
+    // TODO: Add error handling
+    // TODO: Add function to analyze data and convert to CSV file.
+    db.getDataByUser(userId).then(data => {
+        res.status(200);
+        res.send(data);
+    })
 });
 
 app.post('/data', function (req, res) {
