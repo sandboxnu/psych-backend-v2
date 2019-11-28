@@ -1,9 +1,11 @@
 const dotenv = require('dotenv');
 const db = require('./queries')
 var express = require('express');
+var cors = require('cors');
 var app = express();
 dotenv.config();
 app.use(express.json());
+app.use(cors());
 
 app.get('/', function (req, res) {
     res.status(200);
