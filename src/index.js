@@ -26,16 +26,6 @@ app.use('/config', config());
 // Get and Post data
 app.use('/data', data());
 
-app.get('/', function (req, res) {
-    db.getPasswordForUser("TEST").then(data => {
-        res.status(200);
-        res.send(data);
-    }).catch(e => {
-        res.status(500);
-        res.send("Internal server error. Pleae try again later.")
-    });
-});
-
 app.listen(PORT, function () {
     console.log(`API running at http://localhost:${PORT}`);
 });
