@@ -99,10 +99,82 @@ async function postData(id, data) {
   return success;
 }
 
+async function getPasswordForUser(username) {
+  const query = {
+    text: 'SELECT password, verified FROM authdata WHERE username = $1',
+    values: [username]
+  }
+
+  const result = await pool.query(query)
+    .then((res) => {
+      return res.rows;
+    }).catch((e) => {
+      console.log(e);
+      return null;
+    });
+
+  if (result === null) {
+    throw new Error("Error reading from the db")
+  }
+  
+  if (result.length == 1) {
+    if (result[0].verified) {
+      return result[0].password;
+    } else {
+      return '';
+    }
+  } else if (result.length == 0) {
+    return '';
+  } else {
+    throw new Error("Invalid number of rows returned")
+  }
+}
+
+async function updatePasswordForUser(username, password) {
+  const query = {
+    text: "UPDATE authdata SET password = $1 WHERE username=$2",
+    values: [password, username]
+  }
+
+  success = await pool.query(query) 
+    .then(() => {return true})
+    .catch((e) => {
+      console.log(e);
+      return false;
+    });
+  
+  if (!success) {
+    throw new Error("Error updating the db")
+  }
+  return success
+}
+
+async function insertAuthInfo(username, password) {
+  const query = {
+    text: 'INSERT INTO authdata(username, password) VALUES ($1, $2)',
+    values: [username, password]
+  }
+
+  success = await pool.query(query) 
+  .then(() => {return true})
+  .catch((e) => {
+    console.log(e);
+    return false;
+  });
+
+  if (!success) {
+    throw new Error("Error inserting to db")
+  }
+  return success;
+}
+
 module.exports = {
     getTable,
     getDataByUser, 
     postData,
     updateConfig,
     getConfig,
+    getPasswordForUser,
+    insertAuthInfo,
+    updatePasswordForUser
 }

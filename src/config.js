@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const db = require('./queries')
+const { authMiddleware } = require('./authentication');
 
 module.exports = (router = new Router()) => {
     // Get config file
@@ -14,6 +15,7 @@ module.exports = (router = new Router()) => {
     });
     
     // Post Config file
+    router.post('/', authMiddleware);
     router.post('/', function (req, res) {
         if (req.body == null) {
             res.status(400);

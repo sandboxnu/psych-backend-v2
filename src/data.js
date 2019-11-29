@@ -1,7 +1,9 @@
 const { Router } = require('express');
 const db = require('./queries');
+const { authMiddleware } = require('./authentication');
 
 module.exports = (router = new Router()) => {
+    router.get('/', authMiddleware);
     router.get('/', function (req, res) {
         // TODO: Add function to analyze data -> convert to CSV files per user -> then return zipped package with all files.
         db.getTable().then(data => {
