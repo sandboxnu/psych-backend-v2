@@ -7,7 +7,7 @@ module.exports = (router = new Router()) => {
     router.get('/', function (req, res) {
         db.getConfig().then(data => {
             res.status(200);
-            res.send(data)
+            res.send(data.configjson)
         }).catch(e => {
             res.status(500);
             res.send("Internal server error. Pleae try again later.")
