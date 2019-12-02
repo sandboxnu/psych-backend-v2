@@ -28,8 +28,6 @@ module.exports = (router = new Router()) => {
     });
     
     router.post('/', function (req, res) {
-        console.log("TEST");
-        console.log(req.body);
         if (req.body == null) {
             res.status(400);
             res.send('Incorrect request body format');

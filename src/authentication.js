@@ -31,8 +31,10 @@ function authorizer(username, password, cb) {
 
 // Return Promise of boolean representing whether user is authorized
 function verify(username, password) {
+    console.log(username, password);
     return getHash(username)
       .then((hash) => {
+          console.log(hash);
         if (typeof password === 'undefined' || hash === '') {
           // Return not authenticated if no password given or no hash stored
           return false;
